@@ -18,7 +18,9 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
+    // dto
     public List<RoleDTO> listAllRoles() {
+        //entity
        List<Role>list=roleRepository.findAll();
 
        // convert to DTO and return it (list of roles)  mapp to DTO and return to controller
