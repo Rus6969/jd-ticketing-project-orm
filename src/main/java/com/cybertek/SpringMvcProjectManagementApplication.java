@@ -16,13 +16,14 @@ public class SpringMvcProjectManagementApplication {
 	/*
 	after we added model mapper dependency for conversion DTO to ENTITIY and Entity to dto ,
 	we need we Bean of it we need use object from mapper , 2 option :
-	1. create cconfig class and add @Bean annotation third party beans
+	1. create config class and add @Bean annotation third party beans
 	2. we can create it here in runner class
 	 */
 
 
 	@Bean
   public ModelMapper modelMapper(){
+
 		return new ModelMapper();
   }
 
