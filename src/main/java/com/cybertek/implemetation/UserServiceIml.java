@@ -1,14 +1,23 @@
 package com.cybertek.implemetation;
 
 import com.cybertek.dto.UserDTO;
+import com.cybertek.entity.User;
+import com.cybertek.repository.UserRepository;
 import com.cybertek.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public class UserServiceIml implements UserService {
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public List<UserDTO> listAllUsers() {
+       List<User> listUsers =userRepository.findAll(Sort.by("firstName"));
+
         return null;
     }
 
