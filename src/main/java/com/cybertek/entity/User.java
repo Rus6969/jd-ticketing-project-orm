@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-// user reserved name in Spring Boot
 @Table(name = "users")
 @Where(clause = "is_deleted=false")
 public class User extends BaseEntity {
@@ -24,6 +23,7 @@ public class User extends BaseEntity {
     // private String passWord;
     private boolean enabled;
     private String phone;
+    boolean is_deleted;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -31,8 +31,4 @@ public class User extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
-
-
-
-
 }

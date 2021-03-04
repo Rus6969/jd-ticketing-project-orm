@@ -14,10 +14,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceIml implements UserService {
-    @Autowired
+    // injection or contreuctor
+  @Autowired
     UserRepository userRepository;
-    @Autowired
+  @Autowired
     UserMapper userMapper;
+//   UserRepository userRepository;
+//    UserMapper userMapper;
+//
+//    public UserServiceIml(UserRepository userRepository, UserMapper userMapper) {
+//        this.userRepository = userRepository;
+//        this.userMapper = userMapper;
+//    }
 
     @Override
     public List<UserDTO> listAllUsers() {
@@ -31,8 +39,11 @@ public class UserServiceIml implements UserService {
         return null;
     }
 
+
     @Override
     public void save(UserDTO userDTO) {
+    // User obj= userMapper.convertToEntity(userDTO);
+     //userRepository.save(obj);
 
     }
 
