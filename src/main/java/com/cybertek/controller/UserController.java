@@ -28,12 +28,12 @@ public class UserController {
         model.addAttribute("users",userService.listAllUsers());
         return "/user/create";
     }
-//
-//    @PostMapping("/create")
-//    public String insertUser(UserDTO user,Model model){
-//        userService.save(user);
-//        return "redirect:/user/create";
-//    }
+
+    @PostMapping("/create")
+    public String insertUser(UserDTO user,Model model){
+        userService.save(user);
+        return "redirect:/user/create";
+    }
 //
 //    @GetMapping("/update/{username}")
 //    public String editUser(@PathVariable("username") String username,Model model){

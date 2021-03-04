@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceIml implements UserService {
-    // injection or contreuctor
+    // injection or constructor 2 options to inject bean
   @Autowired
     UserRepository userRepository;
   @Autowired
@@ -42,8 +42,8 @@ public class UserServiceIml implements UserService {
 
     @Override
     public void save(UserDTO userDTO) {
-    // User obj= userMapper.convertToEntity(userDTO);
-     //userRepository.save(obj);
+     User obj= userMapper.convertToEntity(userDTO);
+     userRepository.save(obj);
 
     }
 
