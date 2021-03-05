@@ -36,19 +36,29 @@ public class UserServiceIml implements UserService {
 
     @Override
     public UserDTO findByUserName(String username) {
-        return null;
+        User obj = userRepository.findByUserName(username);
+        return  userMapper.convertToDto(obj);
     }
 
 
     @Override
     public void save(UserDTO userDTO) {
-     User obj= userMapper.convertToEntity(userDTO);
-     userRepository.save(obj);
+     User user= userMapper.convertToEntity(userDTO);
+     userRepository.save(user);
 
     }
 
     @Override
     public UserDTO update(UserDTO userDTO) {
+        //find current user
+        User user = userRepository.findByUserName(userDTO.getUserName()); /// here user wirh id
+        //convert that user
+        User convertedUser = userMapper.convertToEntity(userDTO);
+       //(problem is without id ) thats why we assign id from entity line 54
+        convertedUser.setId(user.getId());
+        //save updated user in DB
+        userRepository.save(convertedUser);
+
         return null;
     }
 
