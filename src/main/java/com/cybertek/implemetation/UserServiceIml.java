@@ -64,6 +64,13 @@ public class UserServiceIml implements UserService {
 
     @Override
     public void delete(String username) {
-
+     User user = userRepository.findByUserName(username);
+     user.setIsDeleted(true);
+     userRepository.save(user);
+    }
+//hardDeleted
+    @Override
+    public void deleteByUsername(String name) {
+        userRepository.deleteByUserName(name);
     }
 }

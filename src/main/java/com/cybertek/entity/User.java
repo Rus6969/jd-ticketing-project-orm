@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "users")
+//works with repository belongs to this entity, all queries in repository  will be with "where" is_deleted false
 @Where(clause = "is_deleted=false")
 public class User extends BaseEntity {
 
@@ -23,7 +24,7 @@ public class User extends BaseEntity {
     // private String passWord;
     private boolean enabled;
     private String phone;
-    boolean is_deleted;
+
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
