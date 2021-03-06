@@ -1,13 +1,13 @@
 package com.cybertek.entity;
 
-import com.cybertek.dto.UserDTO;
+
 import com.cybertek.enums.Status;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
+
 import org.hibernate.annotations.Where;
-import org.springframework.format.annotation.DateTimeFormat;
+
 
 import javax.persistence.*;
 import java.time.LocalDate;
