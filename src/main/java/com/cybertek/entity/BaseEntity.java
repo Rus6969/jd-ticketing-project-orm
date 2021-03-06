@@ -22,6 +22,19 @@ public class BaseEntity {
     private LocalDateTime lastUpdateDateTime;
     private Long lastUpdateUserId;
     private Boolean isDeleted =false;
+// before saving object in db
+    @PrePersist
+    private void onPrePersist(){
+    this.insertDateTime=LocalDateTime.now();
+    this.lastUpdateDateTime =LocalDateTime.now();
+    this.lastUpdateUserId=1l;
+    this.insertUserId=1L;
+    }
+    @PreUpdate
+    public void onPreUpdaate(){
+        this.lastUpdateDateTime=LocalDateTime.now();
+        this.lastUpdateUserId=1L;
+    }
 
 
 }
