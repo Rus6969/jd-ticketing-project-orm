@@ -35,6 +35,5 @@ public class User extends BaseEntity {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(mappedBy = "project",fetch = FetchType.LAZY)
-    private List<Project> projects = new ArrayList<>();
+
 }
