@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Setter
 @Where(clause = "is_deleted=false")
 public class Project extends BaseEntity {
-
+    //validation on data base side , avoid duplicates of a project name, if schema was created before drop table first
     @Column(unique = true)
     private String projectCode;
 

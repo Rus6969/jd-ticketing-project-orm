@@ -20,4 +20,6 @@ public class UserDTO {
     private String phone;
     private RoleDTO role;
     private Gender gender;
+// we need thi id when we do nested mapping in projext implementation
+    private Long id;
 }

@@ -18,6 +18,6 @@ public class ProjectDtoConverter implements Converter<String, ProjectDTO> {
 
         @Override
         public ProjectDTO convert(String source) {
-            return projectService.getProjectCode(source);
+            return projectService.getByProjectCode(source);
         }
     }
