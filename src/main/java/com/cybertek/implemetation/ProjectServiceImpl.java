@@ -46,7 +46,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void update(ProjectDTO dto) {
-
+        Project project = projectRepository.findByProjectCode(dto.getProjectCode());
+        Project convertedProject = projectMapper.convertToEntity(dto);
+        // if do not set id here it will create new project which we do not want we want modify project
+        convertedProject.setId(project.getId());
+        // we need get status of a project to assign it to updated one in another case we will lose value
+        convertedProject.setProjectStatus(project.getProjectStatus());
+        projectRepository.save(convertedProject);
     }
 
     @Override
