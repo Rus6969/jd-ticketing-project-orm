@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
 
 
 @Controller
@@ -73,45 +74,25 @@ public class ProjectController {
         return "redirect:/project/create";
     }
 
-//
-//    @GetMapping("/manager/complete")
-//    public String getProjectByManager(Model model) {
-//
-//        UserDTO manager = userService.findById("john@cybertek.com");
-//
-//        List<ProjectDTO> projects = getCountedListOfProjectDTO(manager);
-//
-//        model.addAttribute("projects", projects);
-//
-//
-//        return "/manager/project-status";
-//    }
-//
-//
-//    // curly braces means that we need  return values, first we need to bring all task list( x its eachproject )
-//    List<ProjectDTO> getCountedListOfProjectDTO(UserDTO manager) {
-//
-//        List<ProjectDTO> list = projectService
-//                .findAll()
-//                .stream()
-//                .filter(x -> x.getAssignedManager().equals(manager))
-//                .map(x -> {
-//
-//                    List<TaskDTO> taskList = taskService.findTaskByManager(manager);
-//                    int completeCount = (int) taskList.stream().filter(t -> t.getProject().equals(x) && t.getTaskStatus() == Status.COMPLETE).count();
-//                    int inCompleteCount = (int) taskList.stream().filter(t -> t.getProject().equals(x) && t.getTaskStatus() != Status.COMPLETE).count();
-//
-//                    x.setCompleteTaskCounts(completeCount);
-//                    x.setUnfinishedTaskCounts(inCompleteCount);
-//
-//                    return x;
-//
-//                }).collect(Collectors.toList());
-//
-//        return list;
-//
-//
-//    }
+
+    @GetMapping("/manager/complete")
+    public String getProjectByManager(Model model) {
+
+        List<ProjectDTO> projects = projectService.listAllProjectDetails();
+        model.addAttribute("projects",projects);
+
+
+        return "/manager/project-status";
+    }
+
+    @GetMapping("/manager/complete/{projectCode}")
+    public String manager_completed(@PathVariable("projectCode") String projectCode,Model model){
+
+        projectService.complete(projectCode);
+
+        return "redirect:/project/manager/complete";
+    }
+
 }
 
 
