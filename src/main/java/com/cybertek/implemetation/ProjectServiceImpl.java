@@ -1,6 +1,7 @@
 package com.cybertek.implemetation;
 
 import com.cybertek.dto.ProjectDTO;
+import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.Project;
 import com.cybertek.entity.User;
 import com.cybertek.enums.Status;
@@ -8,6 +9,7 @@ import com.cybertek.mapper.ProjectMapper;
 import com.cybertek.mapper.UserMapper;
 import com.cybertek.repository.ProjectRepository;
 import com.cybertek.service.ProjectService;
+import com.cybertek.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectRepository projectRepository;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserService userService;
+
     @Override
     public ProjectDTO getByProjectCode(String code) {
         Project project = projectRepository.findByProjectCode(code);
@@ -39,7 +44,7 @@ public class ProjectServiceImpl implements ProjectService {
     public Project save(ProjectDTO dto) {
         dto.setProjectStatus(Status.OPEN);
         Project obj = projectMapper.convertToEntity(dto);
-     //   obj.setAssignedManager(userMapper.convertToEntity(dto.getAssignedManager()));
+        //   obj.setAssignedManager(userMapper.convertToEntity(dto.getAssignedManager()));
         Project project = projectRepository.save(obj);
         return project;
     }
@@ -57,7 +62,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void delete(String code) {
-       Project project = projectRepository.findByProjectCode(code);
+        Project project = projectRepository.findByProjectCode(code);
         project.setIsDeleted(true);
         projectRepository.save(project);
 
@@ -65,7 +70,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void complete(String projectCode) {
-        Project project=projectRepository.findByProjectCode(projectCode);
+        Project project = projectRepository.findByProjectCode(projectCode);
         project.setProjectStatus(Status.COMPLETE);
         projectRepository.save(project);
 
@@ -73,11 +78,20 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDTO> listAllProjectDetails() {
-        return null;
+        // will be removed from security
+        UserDTO currentUserDTO = userService.findByUserName("russam4515@gmail.com");
+        User user = userMapper.convertToEntity(currentUserDTO);
+        List<Project> listProjects = projectRepository.findAllByAssignedManager(user);
+
+        return listProjects.stream().map(project -> {
+            ProjectDTO obj = projectMapper.convertToDto(project);
+            return obj;
+        }).collect(Collectors.toList());
     }
 
     @Override
     public List<ProjectDTO> readAllByAssignedManager(User user) {
+
         return null;
     }
 }
