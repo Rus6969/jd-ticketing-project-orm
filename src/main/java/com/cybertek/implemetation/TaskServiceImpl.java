@@ -4,6 +4,7 @@ import com.cybertek.dto.ProjectDTO;
 import com.cybertek.dto.TaskDTO;
 import com.cybertek.entity.Project;
 import com.cybertek.entity.Task;
+import com.cybertek.entity.User;
 import com.cybertek.enums.Status;
 import com.cybertek.mapper.ProjectMapper;
 import com.cybertek.mapper.TaskMapper;
@@ -114,6 +115,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> listAllTaskByStatusIsNot(Status status) {
-        return null;
+        // temporary hardcoded
+        User user = userRepository.findByUserName("hard@gmail.com");
+
+        List<Task> list = taskRepository.findAllByTaskStatusIsNotAndAssignedEmployee(status,user);
+
+      return   list.stream().map(taskMapper::convertToDto).collect(Collectors.toList());
+
     }
 }
