@@ -67,6 +67,11 @@ public class ProjectServiceImpl implements ProjectService {
     public void delete(String code) {
         Project project = projectRepository.findByProjectCode(code);
         project.setIsDeleted(true);
+        // in a line 69 since we set project as deleted true which means we can not create any other project with same projectCode
+        // thats why we assign same project code with unique id , that's how we can use same project code name
+        project.setProjectCode(project.getProjectCode() + "-" + project.getId());
+       // we added that line of code to avoid collapse  when we delete project we delete task by  projectId
+        taskService.deleteByProject(projectMapper.convertToDto(project));
         projectRepository.save(project);
 
     }

@@ -1,5 +1,6 @@
 package com.cybertek.repository;
 
+import com.cybertek.entity.Project;
 import com.cybertek.entity.Task;
 import com.cybertek.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +21,8 @@ public interface TaskRepository  extends JpaRepository<Task,Long> {
             " FROM tasks t JOIN projects p on t.project_id=p.id " +
             " WHERE p.project_code = ?1 AND t.task_status = 'COMPLETE'",nativeQuery = true)
     int totalCompletedTasks(String projectCode);
+
+    List<Task>findAllByProject(Project project);
 
 
 }
