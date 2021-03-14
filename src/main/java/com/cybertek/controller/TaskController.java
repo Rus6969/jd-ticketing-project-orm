@@ -73,7 +73,7 @@ public class TaskController {
     public String edit(Model model){
        List<TaskDTO> tasks = taskService.listAllTaskByStatusIsNot(Status.COMPLETE);
 
-       model.addAttribute("task",tasks);
+       model.addAttribute("tasks",tasks);
        return "task/employee-tasks";
 
     }

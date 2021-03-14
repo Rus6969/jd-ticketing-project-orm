@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class TaskDTO {
