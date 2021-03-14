@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -67,4 +68,14 @@ public class TaskController {
         taskService.update(task);
         return "redirect:/task/create";
     }
+
+    @GetMapping("/employee")
+    public String edit(Model model){
+       List<TaskDTO> tasks = taskService.listAllTaskByStatusIsNot(Status.COMPLETE);
+
+       model.addAttribute("task",tasks);
+       return "task/employee-tasks";
+
+    }
+
 }

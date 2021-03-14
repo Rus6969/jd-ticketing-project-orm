@@ -111,4 +111,9 @@ public class TaskServiceImpl implements TaskService {
         return list.stream().map(
                 taskMapper::convertToDto).collect(Collectors.toList());
     }
+
+    @Override
+    public List<TaskDTO> listAllTaskByStatusIsNot(Status status) {
+        return null;
+    }
 }
