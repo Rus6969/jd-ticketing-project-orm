@@ -1,6 +1,7 @@
 package com.cybertek.controller;
 
 import com.cybertek.dto.TaskDTO;
+import com.cybertek.entity.Task;
 import com.cybertek.enums.Status;
 import com.cybertek.service.ProjectService;
 import com.cybertek.service.TaskService;
@@ -77,5 +78,12 @@ public class TaskController {
        return "task/employee-tasks";
 
     }
+
+    @GetMapping("employee/edit/{id}")
+    public String employee_update(@PathVariable("id") Long id,Model model){
+        TaskDTO task = taskService.findById(id);
+        List<TaskDTO> list = taskService
+    }
+
 
 }
