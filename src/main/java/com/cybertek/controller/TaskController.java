@@ -82,7 +82,15 @@ public class TaskController {
     @GetMapping("employee/edit/{id}")
     public String employee_update(@PathVariable("id") Long id,Model model){
         TaskDTO task = taskService.findById(id);
-        List<TaskDTO> list = taskService
+        List<TaskDTO> tasks = taskService.listAllTaskByProjectManager();
+        model.addAttribute("task",task);
+        model.addAttribute("users",userService.ListAllByRole("employee"));
+        model.addAttribute("projects",projectService.listAllProjects());
+        model.addAttribute("tasks",tasks);
+        model.addAttribute("statuses",Status.values());
+
+
+        return "task/employee-update";
     }
 
 
