@@ -1,9 +1,14 @@
 package com.cybertek.implemetation;
 
+import com.cybertek.dto.ProjectDTO;
+import com.cybertek.dto.TaskDTO;
 import com.cybertek.dto.UserDTO;
+import com.cybertek.entity.Project;
 import com.cybertek.entity.User;
 import com.cybertek.mapper.UserMapper;
 import com.cybertek.repository.UserRepository;
+import com.cybertek.service.ProjectService;
+import com.cybertek.service.TaskService;
 import com.cybertek.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -19,6 +24,10 @@ public class UserServiceIml implements UserService {
     UserRepository userRepository;
   @Autowired
     UserMapper userMapper;
+  @Autowired
+  ProjectService projectService;
+  @Autowired
+  TaskService taskService;
 //   UserRepository userRepository;
 //    UserMapper userMapper;
 //
@@ -78,5 +87,21 @@ public class UserServiceIml implements UserService {
     public List<UserDTO> ListAllByRole(String role) {
         List<User>users=userRepository.findAllByRoleDescriptionIgnoreCase(role);
         return users.stream().map(obj->{return userMapper.convertToDto(obj);}).collect(Collectors.toList());
+    }
+
+    @Override
+    public Boolean checkIfUserCanBeDeleted(User user) {
+        switch (user.getRole().getDescription()){
+            case "Manager":
+                List<ProjectDTO>projectDTOList = projectService.readAllByAssignedManager(user);
+              return  projectDTOList.size() == 0;
+
+            case "Employee":
+                List<TaskDTO>taskList= taskService.readAllByEmployee(user);
+                return taskList.size() == 0;
+            default:
+                return  true;
+        }
+
     }
 }
