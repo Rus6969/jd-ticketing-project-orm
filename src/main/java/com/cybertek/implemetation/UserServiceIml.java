@@ -5,6 +5,7 @@ import com.cybertek.dto.TaskDTO;
 import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.Project;
 import com.cybertek.entity.User;
+import com.cybertek.exception.TicketingProjectException;
 import com.cybertek.mapper.UserMapper;
 import com.cybertek.repository.UserRepository;
 import com.cybertek.service.ProjectService;
@@ -72,9 +73,13 @@ public class UserServiceIml implements UserService {
     }
 
     @Override
-    public void delete(String username) {
+    public void delete(String username) throws TicketingProjectException {
      User user = userRepository.findByUserName(username);
+     if(user == null)
+         throw new  TicketingProjectException("User does not exists ");
      user.setIsDeleted(true);
+     if(!checkIfUserCanBeDeleted(user))
+         throw new  TicketingProjectException("User can not be deleted it uses by project or task  ");
      userRepository.save(user);
     }
 //hardDeleted
