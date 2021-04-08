@@ -6,6 +6,7 @@ import com.cybertek.dto.UserDTO;
 import com.cybertek.entity.Project;
 import com.cybertek.entity.User;
 import com.cybertek.exception.TicketingProjectException;
+import com.cybertek.mapper.MapperUtil;
 import com.cybertek.mapper.UserMapper;
 import com.cybertek.repository.UserRepository;
 import com.cybertek.service.ProjectService;
@@ -23,8 +24,10 @@ public class UserServiceIml implements UserService {
     // injection or constructor 2 options to inject bean
     @Autowired
     UserRepository userRepository;
+//    @Autowired
+//    UserMapper userMapper;
     @Autowired
-    UserMapper userMapper;
+    MapperUtil mapperUtil;
     @Autowired
     ProjectService projectService;
     @Autowired
@@ -42,20 +45,20 @@ public class UserServiceIml implements UserService {
         List<User> listUsers = userRepository.findAll(Sort.by("firstName"));
 
         return listUsers.stream().map(obj -> {
-            return userMapper.convertToDto(obj);
+            return mapperUtil.convert(obj,new UserDTO());
         }).collect(Collectors.toList());
     }
 
     @Override
     public UserDTO findByUserName(String username) {
         User obj = userRepository.findByUserName(username);
-        return userMapper.convertToDto(obj);
+        return mapperUtil.convert(obj,new UserDTO());
     }
 
 
     @Override
     public void save(UserDTO userDTO) {
-        User user = userMapper.convertToEntity(userDTO);
+        User user = mapperUtil.convert(userDTO,new User());
         userRepository.save(user);
 
     }
@@ -65,7 +68,7 @@ public class UserServiceIml implements UserService {
         //find current user
         User user = userRepository.findByUserName(userDTO.getUserName()); /// here user wirh id
         //convert that user
-        User convertedUser = userMapper.convertToEntity(userDTO);
+        User convertedUser = mapperUtil.convert(userDTO, new User());
         //(problem is without id ) thats why we assign id from entity line 54
         convertedUser.setId(user.getId());
         //save updated user in DB
@@ -99,7 +102,7 @@ public class UserServiceIml implements UserService {
     public List<UserDTO> ListAllByRole(String role) {
         List<User> users = userRepository.findAllByRoleDescriptionIgnoreCase(role);
         return users.stream().map(obj -> {
-            return userMapper.convertToDto(obj);
+            return mapperUtil.convert(obj, new UserDTO());
         }).collect(Collectors.toList());
     }
 
