@@ -21,14 +21,14 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceIml implements UserService {
     // injection or constructor 2 options to inject bean
-  @Autowired
+    @Autowired
     UserRepository userRepository;
-  @Autowired
+    @Autowired
     UserMapper userMapper;
-  @Autowired
-  ProjectService projectService;
-  @Autowired
-  TaskService taskService;
+    @Autowired
+    ProjectService projectService;
+    @Autowired
+    TaskService taskService;
 //   UserRepository userRepository;
 //    UserMapper userMapper;
 //
@@ -39,22 +39,24 @@ public class UserServiceIml implements UserService {
 
     @Override
     public List<UserDTO> listAllUsers() {
-       List<User> listUsers =userRepository.findAll(Sort.by("firstName"));
+        List<User> listUsers = userRepository.findAll(Sort.by("firstName"));
 
-        return listUsers.stream().map(obj -> {return userMapper.convertToDto(obj);}).collect(Collectors.toList());
+        return listUsers.stream().map(obj -> {
+            return userMapper.convertToDto(obj);
+        }).collect(Collectors.toList());
     }
 
     @Override
     public UserDTO findByUserName(String username) {
         User obj = userRepository.findByUserName(username);
-        return  userMapper.convertToDto(obj);
+        return userMapper.convertToDto(obj);
     }
 
 
     @Override
     public void save(UserDTO userDTO) {
-     User user= userMapper.convertToEntity(userDTO);
-     userRepository.save(user);
+        User user = userMapper.convertToEntity(userDTO);
+        userRepository.save(user);
 
     }
 
@@ -64,7 +66,7 @@ public class UserServiceIml implements UserService {
         User user = userRepository.findByUserName(userDTO.getUserName()); /// here user wirh id
         //convert that user
         User convertedUser = userMapper.convertToEntity(userDTO);
-       //(problem is without id ) thats why we assign id from entity line 54
+        //(problem is without id ) thats why we assign id from entity line 54
         convertedUser.setId(user.getId());
         //save updated user in DB
         userRepository.save(convertedUser);
@@ -74,15 +76,20 @@ public class UserServiceIml implements UserService {
 
     @Override
     public void delete(String username) throws TicketingProjectException {
-     User user = userRepository.findByUserName(username);
-     if(user == null)
-         throw new  TicketingProjectException("User does not exists ");
-     user.setIsDeleted(true);
-     if(!checkIfUserCanBeDeleted(user))
-         throw new  TicketingProjectException("User can not be deleted it uses by project or task  ");
-     userRepository.save(user);
+        User user = userRepository.findByUserName(username);
+        if (user == null) {
+            throw new TicketingProjectException("User does not exists ");
+
+        }
+        if (!checkIfUserCanBeDeleted(user)) {
+            throw new TicketingProjectException("User can not be deleted it uses by project or task  ");
+        }
+        user.setUserName(user.getUserName()+"-"+user.getId());
+        user.setIsDeleted(true);
+        userRepository.save(user);
     }
-//hardDeleted
+
+    //hardDeleted
     @Override
     public void deleteByUsername(String name) {
         userRepository.deleteByUserName(name);
@@ -90,22 +97,24 @@ public class UserServiceIml implements UserService {
 
     @Override
     public List<UserDTO> ListAllByRole(String role) {
-        List<User>users=userRepository.findAllByRoleDescriptionIgnoreCase(role);
-        return users.stream().map(obj->{return userMapper.convertToDto(obj);}).collect(Collectors.toList());
+        List<User> users = userRepository.findAllByRoleDescriptionIgnoreCase(role);
+        return users.stream().map(obj -> {
+            return userMapper.convertToDto(obj);
+        }).collect(Collectors.toList());
     }
 
     @Override
     public Boolean checkIfUserCanBeDeleted(User user) {
-        switch (user.getRole().getDescription()){
+        switch (user.getRole().getDescription()) {
             case "Manager":
-                List<ProjectDTO>projectDTOList = projectService.readAllByAssignedManager(user);
-              return  projectDTOList.size() == 0;
+                List<ProjectDTO> projectDTOList = projectService.readAllByAssignedManager(user);
+                return projectDTOList.size() == 0;
 
             case "Employee":
-                List<TaskDTO>taskList= taskService.readAllByEmployee(user);
+                List<TaskDTO> taskList = taskService.readAllByEmployee(user);
                 return taskList.size() == 0;
             default:
-                return  true;
+                return true;
         }
 
     }
