@@ -16,6 +16,8 @@ public class UserDTO {
     private String lastName;
     private String userName;
     private String passWord;
+    // in user entity we have password from db we added fieled confirm passwoerd , it will concatanate both passwords ;
+    private String confirmPassword;
     private boolean enabled;
     private String phone;
     private RoleDTO role;

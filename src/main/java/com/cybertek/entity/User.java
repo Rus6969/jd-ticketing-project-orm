@@ -23,15 +23,15 @@ public class User extends BaseEntity {
     private String firstName;
     private String lastName;
     private String userName;
-    // private String passWord;
+    private String passWord;
     private boolean enabled;
     private String phone;
 
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+// we deleted fetch type bc its created infinite loop after added security portion
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
