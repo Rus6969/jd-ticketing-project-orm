@@ -11,8 +11,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
-
-// no arg constructo needs to cary object
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -20,9 +18,11 @@ import java.util.List;
 @Entity
 @Table(name = "roles")
 public class Role extends BaseEntity {
-
+    // no arg constructo needs to cary object
     private String description;
+    //// we can remove because we are using manyToOne relationship
+//
+//    @OneToMany(mappedBy = "role",fetch = FetchType.LAZY)
+//    private List<User> users = new ArrayList<>();
 
-    @OneToMany(mappedBy = "role",fetch = FetchType.LAZY)
-    private List<User> users = new ArrayList<>();
 }
