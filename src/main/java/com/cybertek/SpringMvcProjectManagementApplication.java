@@ -4,14 +4,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 @SpringBootApplication
 public class SpringMvcProjectManagementApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringMvcProjectManagementApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SpringMvcProjectManagementApplication.class, args);
+    }
 
 	/*
 	after we added model mapper dependency for conversion DTO to ENTITIY and Entity to dto ,
@@ -21,16 +22,18 @@ public class SpringMvcProjectManagementApplication {
 	 */
 
 
-	@Bean
-  public ModelMapper modelMapper(){
+    @Bean
+    public ModelMapper modelMapper() {
 
-		return new ModelMapper();
+        return new ModelMapper();
 
+    }
 
-
-
-  }
-
-
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }
+
+

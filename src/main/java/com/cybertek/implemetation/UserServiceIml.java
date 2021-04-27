@@ -14,6 +14,7 @@ import com.cybertek.service.TaskService;
 import com.cybertek.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class UserServiceIml implements UserService {
     // injection or constructor 2 options to inject bean
     @Autowired
     UserRepository userRepository;
-//    @Autowired
+    //    @Autowired
 //    UserMapper userMapper;
     @Autowired
     MapperUtil mapperUtil;
@@ -32,6 +33,9 @@ public class UserServiceIml implements UserService {
     ProjectService projectService;
     @Autowired
     TaskService taskService;
+ //   to bring third party class need create bean at configuration
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 //   UserRepository userRepository;
 //    UserMapper userMapper;
 //
@@ -45,22 +49,25 @@ public class UserServiceIml implements UserService {
         List<User> listUsers = userRepository.findAll(Sort.by("firstName"));
 
         return listUsers.stream().map(obj -> {
-            return mapperUtil.convert(obj,new UserDTO());
+            return mapperUtil.convert(obj, new UserDTO());
         }).collect(Collectors.toList());
     }
 
     @Override
     public UserDTO findByUserName(String username) {
         User obj = userRepository.findByUserName(username);
-        return mapperUtil.convert(obj,new UserDTO());
+        return mapperUtil.convert(obj, new UserDTO());
     }
 
 
     @Override
     public void save(UserDTO userDTO) {
-        User user = mapperUtil.convert(userDTO,new User());
+        User foundUser = userRepository.findByUserName(userDTO.getUserName());
+        //dto.setenabled true is need for confirmation ( lik email sms etc ( set it as true )
+        userDTO.setEnabled(true);
+        User user = mapperUtil.convert(userDTO, new User());
+        user.setPassWord(passwordEncoder.encode(user.getPassWord()));
         userRepository.save(user);
-
     }
 
     @Override
@@ -87,7 +94,7 @@ public class UserServiceIml implements UserService {
         if (!checkIfUserCanBeDeleted(user)) {
             throw new TicketingProjectException("User can not be deleted it uses by project or task  ");
         }
-        user.setUserName(user.getUserName()+"-"+user.getId());
+        user.setUserName(user.getUserName() + "-" + user.getId());
         user.setIsDeleted(true);
         userRepository.save(user);
     }
