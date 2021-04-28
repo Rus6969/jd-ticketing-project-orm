@@ -13,6 +13,7 @@ import com.cybertek.service.TaskService;
 import com.cybertek.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -70,7 +71,7 @@ public class ProjectServiceImpl implements ProjectService {
         // in a line 69 since we set project as deleted true which means we can not create any other project with same projectCode
         // thats why we assign same project code with unique id , that's how we can use same project code name
         project.setProjectCode(project.getProjectCode() + "-" + project.getId());
-       // we added that line of code to avoid collapse  when we delete project we delete task by  projectId
+        // we added that line of code to avoid collapse  when we delete project we delete task by  projectId
         taskService.deleteByProject(projectMapper.convertToDto(project));
         projectRepository.save(project);
 
@@ -86,7 +87,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDTO> listAllProjectDetails() {
-        UserDTO currentUserDTO = userService.findByUserName("russam4515@gmail.com");
+        // this class holds all credentials
+        /*
+        The SecurityContext and SecurityContextHolder are two fundamental classes of Spring Security.
+        The SecurityContext is used to store the details of the currently authenticated user, also known as a principle.
+        So, if you have to get the username or any other user details, you need to get this SecurityContext first.
+         */
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserDTO currentUserDTO = userService.findByUserName(username);
         User user = userMapper.convertToEntity(currentUserDTO);
         List<Project> list = projectRepository.findAllByAssignedManager(user);
 
@@ -98,12 +106,11 @@ public class ProjectServiceImpl implements ProjectService {
         }).collect(Collectors.toList());
 
 
-
     }
 
     @Override
     public List<ProjectDTO> readAllByAssignedManager(User user) {
-     List<Project>list =projectRepository.findAllByAssignedManager(user);
+        List<Project> list = projectRepository.findAllByAssignedManager(user);
 
         return list.stream().map(projectMapper::convertToDto).collect(Collectors.toList());
 

@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                 .tokenValiditySeconds(120)
                 .key("cybertekSecret")    // connect cookies and that key
-                .userDetailsService(securityService); // which user to remember
+                .userDetailsService(securityService); // which user to remember brining user from db
     }
 
 

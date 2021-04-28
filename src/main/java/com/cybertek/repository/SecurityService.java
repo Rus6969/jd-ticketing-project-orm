@@ -11,3 +11,7 @@ public interface SecurityService extends UserDetailsService {
     UserDetails loadUserByUsername(String s) throws UsernameNotFoundException;
 
 }
+/*
+here we have our business logic we retrieve a user from DB and provide that user to Spring framework ,
+and Spring will pass to USerDetails(convert)  to handle authority
+ */
