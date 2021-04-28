@@ -5,10 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class LoginController {
-	
-	@RequestMapping
+
+	// we add  value login on brackets it here bc when we do logout we want to come back to login page
+	@RequestMapping(value = {"/login","/"})
 	public String login(){
-		return "login";
+
+		return "/login";
 	}
 	
 	@RequestMapping("/welcome")
