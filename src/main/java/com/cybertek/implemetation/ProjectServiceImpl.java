@@ -92,6 +92,7 @@ public class ProjectServiceImpl implements ProjectService {
         The SecurityContext and SecurityContextHolder are two fundamental classes of Spring Security.
         The SecurityContext is used to store the details of the currently authenticated user, also known as a principle.
         So, if you have to get the username or any other user details, you need to get this SecurityContext first.
+        https://www.baeldung.com/get-user-in-spring-security
          */
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserDTO currentUserDTO = userService.findByUserName(username);

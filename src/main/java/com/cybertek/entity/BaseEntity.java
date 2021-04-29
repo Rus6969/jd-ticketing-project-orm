@@ -13,35 +13,40 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @MappedSuperclass
+//we need provide listener class here
+@EntityListeners(BaseEntityListener.class)
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //nullable false updatable false we do not want updatre the value it should be the same
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime insertDateTime;
-    @Column(nullable = false, updatable = false)
-    private Long insertUserId;
-    @Column(nullable = false)
-    private LocalDateTime lastUpdateDateTime;
-    @Column(nullable = false)
-    private Long lastUpdateUserId;
-    private Boolean isDeleted = false;
+    //nullable false updatable false we do not want update the value it should be the same
 
-    // before saving object in db
-    @PrePersist
-    private void onPrePersist() {
-        this.insertDateTime = LocalDateTime.now();
-        this.lastUpdateDateTime = LocalDateTime.now();
-        this.lastUpdateUserId = 1l;
-        this.insertUserId = 1L;
-    }
+    @Column(nullable = false,updatable = false)
+    public LocalDateTime insertDateTime;
+    @Column(nullable = false,updatable = false)
+    public Long insertUserId;
+    @Column(nullable = false)
+    public LocalDateTime lastUpdateDateTime;
+    @Column(nullable = false)
+    public Long lastUpdateUserId;
 
-    @PreUpdate
-    public void onPreUpdaate() {
-        this.lastUpdateDateTime = LocalDateTime.now();
-        this.lastUpdateUserId = 1L;
-    }
+    private Boolean isDeleted=false;
+   // we remove those 2 methods  bc we are can not do an injection in entity class thats why we created class BaseEntityListener
+//
+//    // before saving object in db
+//    @PrePersist
+//    private void onPrePersist() {
+//        this.insertDateTime = LocalDateTime.now();
+//        this.lastUpdateDateTime = LocalDateTime.now();
+//        this.lastUpdateUserId = 1l;
+//        this.insertUserId = 1L;
+//    }
+//
+//    @PreUpdate
+//    public void onPreUpdaate() {
+//        this.lastUpdateDateTime = LocalDateTime.now();
+//        this.lastUpdateUserId = 1L;
+//    }
 
 
 }

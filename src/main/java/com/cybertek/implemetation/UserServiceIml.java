@@ -76,6 +76,8 @@ public class UserServiceIml implements UserService {
         User user = userRepository.findByUserName(userDTO.getUserName()); /// here user wirh id
         //convert that user
         User convertedUser = mapperUtil.convert(userDTO, new User());
+        //password always need to be encoded
+        convertedUser.setPassWord(passwordEncoder.encode(convertedUser.getPassWord()));
         //(problem is without id ) thats why we assign id from entity line 54
         convertedUser.setId(user.getId());
         //save updated user in DB
