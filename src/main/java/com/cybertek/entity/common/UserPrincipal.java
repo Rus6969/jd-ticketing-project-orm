@@ -60,7 +60,7 @@ in our case one role is assigne to one user , in some projects user has dieffere
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
+ // we need when we get confirmation like email sms etc
     @Override
     public boolean isEnabled() {
         return this.user.isEnabled();
