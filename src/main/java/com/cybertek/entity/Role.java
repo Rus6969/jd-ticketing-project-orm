@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 @Table(name = "roles")
 public class Role extends BaseEntity {
-    // no arg constructo needs to cary object
+    // no arg constructor is used to carry object
     private String description;
     //// we can remove because we are using manyToOne relationship
 //

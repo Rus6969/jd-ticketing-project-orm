@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
-
+// here we have use drived queries
     User findByUserName(String username);
     //
     @Transactional

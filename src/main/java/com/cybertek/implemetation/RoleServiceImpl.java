@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-    // injected this repository to bring data from data base , however we bring it as entity , thats wahy we need to have
+    // injected this repository to bring data from data base , however we bring it as entity , thats why we need to have
     // mapper to converrt it to dto and bring to UI
     @Autowired
     private RoleRepository roleRepository;
@@ -28,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
 
         // convert to DTO and return it (list of roles)  mapp to DTO and return to controller
 
-        return list.stream().map(obj -> {
+        return list.stream().map(obj->{
             return roleMapper.convertToDto(obj);
         }).collect(Collectors.toList());
 
